@@ -13,6 +13,8 @@ puts "level_order_iter:"
 p bst.level_order_iter
 puts "level_order_rec:"
 p bst.level_order_rec
+puts "find 1"
+p bst.find(1)
 # puts "delete leaf"
 # bst.delete(13)
 # puts "delete 1-child child"

@@ -34,13 +34,11 @@ class Tree
       end
       return
     end
-
     parent_node = find_parent_of(node)
     if parent_node.nil?
       puts "Can't delete \"#{value}.\" Value not present in tree"
       return
     end
-
     node_to_delete = (node == parent_node.left) ? parent_node.left : parent_node.right
     if node_to_delete.is_leaf?
       delete_leaf_node(node_to_delete, parent_node)
@@ -51,8 +49,19 @@ class Tree
     end
   end
 
-  def find
-    # accepts a value and returns the node with the given value.
+  def find(input, tree_node = root)
+    if tree_node.nil?
+    elsif input.is_a?(Integer)
+      find(Node.new(input))
+    elsif !input.is_a?(Node)
+      raise "Invalid find input"
+    elsif input < tree_node
+      find(input, tree_node.left)
+    elsif input > tree_node
+      find(input, tree_node.right)
+    else
+      tree_node
+    end
   end
 
   def level_order_rec(queue = [root], return_arr = [])
