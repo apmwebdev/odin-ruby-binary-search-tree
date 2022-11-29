@@ -64,26 +64,26 @@ class Tree
     end
   end
 
-  def level_order_rec(queue = [root], return_arr = [])
+  def level_order_rec(queue = [root], return_arr = [], &block)
     if queue.empty?
       return return_arr
     end
     queue.push(queue.first.left) unless queue.first.left.nil?
     queue.push(queue.first.right) unless queue.first.right.nil?
-    if block_given?
-      return_arr.push(yield(queue.shift))
+    if block
+      block.call(queue.shift)
     else
       return_arr.push(queue.shift.value)
     end
-    level_order_rec(queue, return_arr)
+    level_order_rec(queue, return_arr, &block)
   end
 
-  def level_order_iter
+  def level_order_iter(&block)
     return_arr = []
     queue = [root]
     queue.each do |node|
-      if block_given?
-        return_arr.push(yield(node))
+      if block
+        block.call(node)
       else
         return_arr.push(node.value)
       end
@@ -93,22 +93,22 @@ class Tree
     return_arr
   end
 
-  def inorder(start_node = root, return_arr = [])
+  def inorder(start_node = root, return_arr = [], &block)
     return if start_node.nil?
-    inorder(start_node.left, return_arr)
-    if block_given?
-      return_arr.push(yield(start_node))
+    inorder(start_node.left, return_arr, &block)
+    if block
+      block.call(start_node)
     else
       return_arr.push(start_node.value)
     end
-    inorder(start_node.right, return_arr)
+    inorder(start_node.right, return_arr, &block)
     return_arr
   end
 
   def preorder(start_node = root, return_arr = [], &block)
     return if start_node.nil?
     if block
-      return_arr.push(block.call(start_node))
+      block.call(start_node)
     else
       return_arr.push(start_node.value)
     end
@@ -117,12 +117,12 @@ class Tree
     return_arr
   end
 
-  def postorder(start_node = root, return_arr = [])
+  def postorder(start_node = root, return_arr = [], &block)
     return if start_node.nil?
-    postorder(start_node.left, return_arr)
-    postorder(start_node.right, return_arr)
-    if block_given?
-      return_arr.push(yield(start_node))
+    postorder(start_node.left, return_arr, &block)
+    postorder(start_node.right, return_arr, &block)
+    if block
+      block.call(start_node)
     else
       return_arr.push(start_node.value)
     end
