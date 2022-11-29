@@ -9,12 +9,10 @@ puts "Building tree (no output)"
 bst.build_tree
 puts "pretty_print:"
 bst.pretty_print
-puts "inorder, no block:"
-p bst.inorder
-puts "preorder, no block:"
-p bst.preorder
-puts "postorder, no block:"
-p bst.postorder
+puts "level_order_iter:"
+p bst.level_order_iter
+puts "level_order_rec:"
+p bst.level_order_rec
 # puts "delete leaf"
 # bst.delete(13)
 # puts "delete 1-child child"

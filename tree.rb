@@ -55,19 +55,34 @@ class Tree
     # accepts a value and returns the node with the given value.
   end
 
-  def level_order
-    # accepts a block. This method should traverse the tree in breadth-first
-    # level order and yield each node to the provided block. This method can be
-    # implemented using either iteration or recursion (try implementing both!).
-    # The method should return an array of values if no block is given. Tip: You
-    # will want to use an array acting as a queue to keep track of all the child
-    # nodes that you have yet to traverse and to add new ones to the list
+  def level_order_rec(queue = [root], return_arr = [])
+    if queue.empty?
+      return return_arr
+    end
+    queue.push(queue.first.left) unless queue.first.left.nil?
+    queue.push(queue.first.right) unless queue.first.right.nil?
+    if block_given?
+      return_arr.push(yield(queue.shift))
+    else
+      return_arr.push(queue.shift.value)
+    end
+    level_order_rec(queue, return_arr)
   end
 
-  # Write #inorder, #preorder, and #postorder methods that accepts a block. Each
-  # method should traverse the tree in their respective depth-first order and
-  # yield each node to the provided block. The methods should return an array of
-  # values if no block is given.
+  def level_order_iter
+    return_arr = []
+    queue = [root]
+    queue.each do |node|
+      if block_given?
+        return_arr.push(yield(node))
+      else
+        return_arr.push(node.value)
+      end
+      queue.push(node.left) unless node.left.nil?
+      queue.push(node.right) unless node.right.nil?
+    end
+    return_arr
+  end
 
   def inorder(start_node = root, return_arr = [])
     return if start_node.nil?
