@@ -105,15 +105,15 @@ class Tree
     return_arr
   end
 
-  def preorder(start_node = root, return_arr = [])
+  def preorder(start_node = root, return_arr = [], &block)
     return if start_node.nil?
-    if block_given?
-      return_arr.push(yield(start_node))
+    if block
+      return_arr.push(block.call(start_node))
     else
       return_arr.push(start_node.value)
     end
-    preorder(start_node.left, return_arr)
-    preorder(start_node.right, return_arr)
+    preorder(start_node.left, return_arr, &block)
+    preorder(start_node.right, return_arr, &block)
     return_arr
   end
 
@@ -129,9 +129,19 @@ class Tree
     return_arr
   end
 
-  def height(node)
-    # accepts a node and returns its height. Height is defined as the number of
-    # edges in longest path from a given node to a leaf node.
+  def height(value)
+    start_node = find(value)
+    return if start_node.nil?
+    height_hash = {start_node.value => 0}
+    preorder(start_node) do |node|
+      unless node.left.nil?
+        height_hash[node.left.value] = height_hash[node.value] + 1
+      end
+      unless node.right.nil?
+        height_hash[node.right.value] = height_hash[node.value] + 1
+      end
+    end
+    height_hash.values.max
   end
 
   def depth(node)
