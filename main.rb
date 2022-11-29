@@ -17,3 +17,5 @@ puts "level_order_rec:"
 p bst.level_order_rec
 puts "height of 4 (should be 2)"
 p bst.height(4)
+puts "depth of 1 (should be 3)"
+p bst.depth(12)

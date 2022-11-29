@@ -49,18 +49,20 @@ class Tree
     end
   end
 
-  def find(input, tree_node = root)
+  def find(input, tree_node = root, depth = 0, need_depth = false)
     if tree_node.nil?
     elsif input.is_a?(Integer)
-      find(Node.new(input))
+      find(Node.new(input), tree_node, depth, need_depth)
     elsif !input.is_a?(Node)
       raise "Invalid find input"
     elsif input < tree_node
-      find(input, tree_node.left)
+      find(input, tree_node.left, depth + 1, need_depth)
     elsif input > tree_node
-      find(input, tree_node.right)
-    else
+      find(input, tree_node.right, depth + 1, need_depth)
+    elsif !need_depth
       tree_node
+    else
+      depth
     end
   end
 
@@ -144,9 +146,8 @@ class Tree
     height_hash.values.max
   end
 
-  def depth(node)
-    # accepts a node and returns its depth. Depth is defined as the number of
-    # edges in path from a given node to the tree’s root node.
+  def depth(value)
+    find(value, root, 0, true)
   end
 
   def balanced?
