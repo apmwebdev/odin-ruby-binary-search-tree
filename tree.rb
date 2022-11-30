@@ -1,8 +1,13 @@
 class Tree
-  attr_accessor :input_data, :root
+  attr_accessor :root
+  attr_reader :input_data
 
-  def initialize(input_data)
-    @input_data = format_input_data(input_data)
+  def initialize(input)
+    set_input_data(input)
+  end
+  
+  def set_input_data(input)
+    @input_data = format_input_data(input)
   end
 
   def build_tree
@@ -173,8 +178,8 @@ class Tree
   end
 
   def rebalance
-    # rebalances an unbalanced tree. Tip: You’ll want to use a traversal method
-    # to provide a new array to the #build_tree method.
+    set_input_data(inorder)
+    build_tree
   end
 
   private

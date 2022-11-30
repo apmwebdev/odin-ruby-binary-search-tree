@@ -16,3 +16,6 @@ bst.delete(10)
 bst.pretty_print
 puts "balanced?"
 puts bst.balanced?
+puts "rebalance"
+bst.rebalance
+bst.pretty_print
