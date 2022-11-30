@@ -151,9 +151,25 @@ class Tree
   end
 
   def balanced?
-    # checks if the tree is balanced. A balanced tree is one where the
-    # difference between heights of left subtree and right subtree of every node
-    # is not more than 1.
+    is_balanced = true
+    level_order_rec do |node|
+      next if node.nil?
+      next if node.is_leaf?
+      if node.has_one_child?
+        if height(node.value) == 1
+          next
+        else
+          is_balanced = false
+          break
+        end
+      elsif (height(node.left.value) - height(node.right.value)).abs <= 1
+        next
+      else
+        is_balanced = false
+        break
+      end
+    end
+    is_balanced
   end
 
   def rebalance

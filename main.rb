@@ -9,13 +9,10 @@ puts "Building tree (no output)"
 bst.build_tree
 puts "pretty_print:"
 bst.pretty_print
-# puts "preorder:"
-# p bst.preorder
-puts "level_order_iter:"
-p bst.level_order_iter
-puts "level_order_rec:"
-p bst.level_order_rec
-puts "height of 4 (should be 2)"
-p bst.height(4)
-puts "depth of 1 (should be 3)"
-p bst.depth(12)
+puts "deletions..."
+bst.delete(11)
+bst.delete(9)
+bst.delete(10)
+bst.pretty_print
+puts "balanced?"
+puts bst.balanced?
