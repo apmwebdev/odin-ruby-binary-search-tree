@@ -10,8 +10,13 @@ class Tree
     @input_data = format_input_data(input)
   end
 
-  def build_tree
-    @root = build_tree_recursively(0, input_data.length - 1)
+  def build_tree(start_i = 0, end_i = input_data.length - 1)
+    return if start_i > end_i
+    mid = (start_i + end_i) / 2
+    node = Node.new(input_data[mid])
+    node.left = build_tree(start_i, mid - 1)
+    node.right = build_tree(mid + 1, end_i)
+    @root = node
   end
 
   def pretty_print(node = @root, prefix = "", is_left = true)
@@ -20,10 +25,26 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? "    " : "│   "}", true) if node.left
   end
 
-  def insert(value)
-    raise "Invalid insert" unless value.is_a?(Integer)
-    new_node = Node.new(value)
-    insert_recursively(new_node)
+  def insert(input, tree_node = root)
+    if input.is_a?(Integer)
+      insert(Node.new(input), tree_node)
+    elsif !input.is_a?(Node)
+      raise "Invalid insert"
+    elsif input < tree_node
+      if tree_node.left.nil?
+        tree_node.left = input
+      else
+        insert(input, tree_node.left)
+      end
+    elsif input > tree_node
+      if tree_node.right.nil?
+        tree_node.right = input
+      else
+        insert(input, tree_node.right)
+      end
+    else
+      puts "Can't insert. Value already exists in tree"
+    end
   end
 
   def delete(value)
@@ -188,33 +209,6 @@ class Tree
     raise "Empty input" if input.nil? || input.empty?
     raise "Invalid input data" unless input.is_a?(Array)
     input.uniq.sort
-  end
-
-  def build_tree_recursively(start_i, end_i)
-    return if start_i > end_i
-    mid = (start_i + end_i) / 2
-    root = Node.new(input_data[mid])
-    root.left = build_tree_recursively(start_i, mid - 1)
-    root.right = build_tree_recursively(mid + 1, end_i)
-    root
-  end
-
-  def insert_recursively(node, tree_node = root)
-    if node < tree_node
-      if tree_node.left.nil?
-        tree_node.left = node
-      else
-        insert_recursively(node, tree_node.left)
-      end
-    elsif node > tree_node
-      if tree_node.right.nil?
-        tree_node.right = node
-      else
-        insert_recursively(node, tree_node.right)
-      end
-    else
-      puts "Can't insert. Value already exists in tree"
-    end
   end
 
   def find_parent_of(node, tree_node = root)
